@@ -1,0 +1,383 @@
+/**
+ * 
+ */
+package project5;
+
+import CS2114.TextShape;
+import CS2114.Window;
+
+import java.awt.Color;
+
+import CS2114.Button;
+import CS2114.Shape;
+import CS2114.WindowSide;
+import java.util.*;
+
+/**
+ * @author Addie Martin (addie2)
+ * @version 2015.11.12
+ */
+public class DisplayWindowGUI {
+    private Window window;
+    private Button prev;
+    private Button next;
+    private Button quit;
+    private Button sortName;
+    private Button sortTitle;
+    private Button sortYear;
+    private Button sortGenre;
+    private Button repHobby;
+    private Button repMajor;
+    private Button repRegion;
+    // original instructions for user
+    private TextShape instruct;
+    private Shape legendBox;
+    private TextShape songTitle;
+    private TextShape heardLegend;
+    private Shape divide;
+    private TextShape likedLegend;
+    private TextShape legendTitle;
+    private TextShape legendRow1;
+    private TextShape legendRow2;
+    private TextShape legendRow3;
+    private TextShape legendRow4;
+
+    private String currRep = "";
+    private String currSort = "title";
+    private int currIndex = 0;
+
+    /**
+     * Constructor for Display window.
+     */
+    public DisplayWindowGUI() {
+        window = new Window();
+        prev = new Button("Prev");
+        prev.onClick(this, "clickedPrev");
+        next = new Button("Next");
+        next.onClick(this, "clickedNext");
+        quit = new Button("Quit");
+        sortName = new Button("Sort by Artist Name");
+        sortTitle = new Button("Sort by Song Title");
+        sortYear = new Button("Sort by Release Year");
+        sortGenre = new Button("Sort by Genre");
+        repHobby = new Button("Represent Hobby");
+        repMajor = new Button("Represent Major");
+        repRegion = new Button("Represent Region");
+
+        instruct = new TextShape(window.getWidth()/2, (window.getHeight() - 100)/2, "Please select how to represent songs");
+        instruct.setBackgroundColor(Color.red);
+        instruct.setForegroundColor(Color.black);
+        legendBox = new Shape(700, 140, 110, 160, Color.gray);
+        songTitle = new TextShape(715, 245, "Song Title");
+        heardLegend = new TextShape(705, 270, "Heard");
+        divide = new Shape(750, 265, 5, 35, Color.BLACK);
+        likedLegend = new TextShape(758, 270, "Liked");
+
+        legendTitle = new TextShape(701, 145, "");
+        legendTitle.setBackgroundColor(Color.white);
+        legendRow1 = new TextShape(701, 165, "");
+        legendRow1.setBackgroundColor(Color.white);
+        legendRow1.setForegroundColor(Color.green);
+        legendRow2 = new TextShape(701, 185, "");
+        legendRow2.setBackgroundColor(Color.white);
+        legendRow2.setForegroundColor(Color.yellow);
+        legendRow3 = new TextShape(701, 205, "");
+        legendRow3.setBackgroundColor(Color.white);
+        legendRow3.setForegroundColor(Color.blue);
+        legendRow4 = new TextShape(701, 225, "");
+        legendRow4.setBackgroundColor(Color.white);
+        legendRow4.setForegroundColor(Color.pink);
+
+        repHobby.onClick(this, "clickedRepHobby");
+        window.addButton(repHobby, WindowSide.SOUTH);
+        repMajor.onClick(this, "clickedRepMajor");
+        window.addButton(repMajor, WindowSide.SOUTH);
+        repRegion.onClick(this, "clickedRepRegion");
+        window.addButton(repRegion, WindowSide.SOUTH);
+        quit.onClick(this, "clickedQuit");
+        window.addButton(quit, WindowSide.SOUTH);
+        window.addButton(prev, WindowSide.NORTH);
+        sortName.onClick(this, "clickedSortArtist");
+        window.addButton(sortName, WindowSide.NORTH);
+        sortTitle.onClick(this, "clickedSortTitle");
+        window.addButton(sortTitle, WindowSide.NORTH);
+        sortYear.onClick(this, "clickedSortYear");
+        window.addButton(sortYear, WindowSide.NORTH);
+        sortGenre.onClick(this, "clickedSortGenre");
+        window.addButton(sortGenre, WindowSide.NORTH);
+        window.addButton(next, WindowSide.NORTH);
+
+    }
+
+    /**
+     * When the button is clicked, the system quits, with zero errors.
+     * 
+     * @param buttonq
+     */
+    public void clickedQuit(Button buttonq) {
+        System.exit(0);
+    }
+
+    /**
+     * Draws the parts of the legends that don't change. Called in ALL
+     * updateLegend methods.
+     */
+    public void drawLegend() {
+        window.addShape(songTitle);
+        songTitle.setBackgroundColor(Color.white);
+        window.addShape(heardLegend);
+        heardLegend.setBackgroundColor(Color.white);
+        window.addShape(divide);
+        window.addShape(likedLegend);
+        likedLegend.setBackgroundColor(Color.white);
+        window.addShape(legendBox);
+        legendBox.setBackgroundColor(Color.white);
+
+    }
+
+    /**
+     * Updates the legend to correspond with the "represent" button that has
+     * been clicked which is Hobby in this case.
+     */
+    public void updateLegendHobby() {
+        window.addShape(legendRow1);
+        legendRow1.setText("Read");
+        window.addShape(legendRow2);
+        legendRow2.setText("Art");
+        window.addShape(legendRow3);
+        legendRow3.setText("Sports");
+        window.addShape(legendRow4);
+        legendRow4.setText("Music");
+        window.addShape(legendTitle);
+        legendTitle.setText("Hobby Legend");
+        drawLegend();
+    }
+
+    /**
+     * Updates the legend to correspond with the "represent" button that has
+     * been clicked which is Major in this case.
+     */
+    public void updateLegendMajor() {
+        window.addShape(legendRow1);
+        legendRow1.setText("Comp Sci");
+        window.addShape(legendRow2);
+        legendRow2.setText("Other Eng");
+        window.addShape(legendRow3);
+        legendRow3.setText("Math/CMDA");
+        window.addShape(legendRow4);
+        legendRow4.setText("Other Major");
+        window.addShape(legendTitle);
+        legendTitle.setText("Major Legend");
+        drawLegend();
+    }
+
+    /**
+     * Updates the legend to correspond with the "represent" button that has
+     * been clicked which is Region in this case.
+     */
+    public void updateLegendRegion() {
+        window.addShape(legendRow1);
+        legendRow1.setText("Northeast");
+        window.addShape(legendRow2);
+        legendRow2.setText("Southeast");
+        window.addShape(legendRow3);
+        legendRow3.setText("Rest of US");
+        window.addShape(legendRow4);
+        legendRow4.setText("Outside US");
+        window.addShape(legendTitle);
+        legendTitle.setText("Region Legend");
+        drawLegend();
+    }
+
+    /**
+     * Updates the visualization of the data and updates the legend. Calls
+     * updateLegendHobby()
+     */
+    public void clickedRepHobby(Button buttonH) {
+        updateLegendHobby();
+        currRep = "hobby";
+        window.removeShape(instruct);
+        disableNextPrev();
+        drawSongs();
+        
+    }
+
+    /**
+     * Updates the visualization of the data and updates the legend.
+     */
+    public void clickedRepMajor(Button buttonM) {
+        updateLegendMajor();
+        currRep = "major";
+        window.removeShape(instruct);
+        disableNextPrev();
+        drawSongs();
+
+    }
+
+    /**
+     * Updates the visualization of the data and updates the legend.
+     */
+    public void clickedRepRegion(Button buttonR) {
+        updateLegendRegion();
+        currRep = "region";
+        window.removeShape(instruct);
+        disableNextPrev();
+        drawSongs();
+
+    }
+
+    /**
+     * Removes the previous 9 songs and their data representation from the
+     * window and displays the next 9.
+     */
+    public void clickedNext(Button buttonN) {
+        currIndex += 9;
+        disableNextPrev();
+        drawSongs();
+    }
+
+    /**
+     * Removes the next 9 songs and their data representation from the window
+     * and displays the previous 9. Should take param ?
+     */
+    public void clickedPrev(Button buttonP) {
+        currIndex -= 9;
+        disableNextPrev();
+        drawSongs();
+    }
+
+    public void drawSongs() {
+        window.removeAllShapes();
+        if (currRep.equals("hobby"))
+        {
+            updateLegendHobby();
+        }
+        else if (currRep.equals("major"))
+        {
+            updateLegendMajor();
+        }
+        else if (currRep.equals("region"))
+        {
+            updateLegendRegion();
+        }
+        int count = 0;
+        for (int i = currIndex; i < currIndex + 9; i++) {
+            int indexX = (count % 3) + 1;
+            int indexY = (count / 3) + 1;
+            int xCord = (indexX * 200) - 75;
+            int yCord = (indexY * 100) - 75;
+            System.out.println(indexY);
+            String word = "" + Math.random();
+            TextShape title = new TextShape(xCord, yCord, word);
+            // y cord + 10 for subtitle
+            window.addShape(title);
+            
+            count++;
+            // Song currentSong = database.getList().get(i);
+            //TextShape title = new TextShape(0, 0, "words"/*currentSong.getTitle)*/);
+            //title.
+        }
+    }
+
+    /**
+     * database.sortByArtist(); drawSongs();
+     * 
+     * @param buttonA
+     */
+    public void clickedSortArtist(Button buttonA) {
+        currSort = "artist";
+        // sortByArtist();
+        clickedSort();
+    }
+
+    /**
+     * database.sortByYear(); drawSongs();
+     * 
+     * @param buttonA
+     */
+    public void clickedSortYear(Button buttonA) {
+        currSort = "year";
+        // sortByYear();
+        clickedSort();
+    }
+
+    /**
+     * database.sortByGenre(); drawSongs();
+     * 
+     * @param buttonA
+     */
+    public void clickedSortGenre(Button buttonA) {
+        currSort = "genre";
+        // sortByGenre();
+        clickedSort();
+    }
+
+    /**
+     * database.sortByTitle(); drawSongs();
+     * 
+     * @param buttonA
+     */
+    public void clickedSortTitle(Button buttonA) {
+        currSort = "title";
+        // sortByTitle();
+        clickedSort();
+    }
+    
+    /**
+     * Adds error message if representation is not
+     * selected. removes it when rep is clicked
+     */
+    public void clickedSort() {
+        if (currRep.isEmpty()) {
+            window.addShape(instruct);
+        } 
+        else {
+            window.removeShape(instruct);
+            drawSongs();
+        }
+    }
+    
+    /**
+     * disables and enables next and prev
+     * when necessary
+     */
+    public void disableNextPrev() {
+        if (currIndex == 0) {
+            prev.disable();
+        }
+        else {
+            prev.enable();
+        }
+        
+        /**
+         * if (currIndex + 9 == database.getSongList.size) {
+         *    next.disable();
+         * }
+         * else {
+         *    next.enable();
+         * }      
+         */
+    }
+
+    /**
+     * Runs window
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
+        new DisplayWindowGUI();
+    }
+
+    /*
+     * if (major.equals("Computer Science")) { 
+     * //   csCount++; 
+     *      if (current[(i * 2) + 5].equals("Yes")) { 
+     *          csCount++; //csHeard 
+     *          if (current[(i * 2) + 6].equals("Yes")) { 
+     *              csLike++; 
+     *          } 
+     *        }
+     *      }
+     */
+
+}
